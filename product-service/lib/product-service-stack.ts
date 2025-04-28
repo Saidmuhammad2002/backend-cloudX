@@ -44,12 +44,6 @@ export class ProductServiceStack extends cdk.Stack {
       description: "Product Service API",
     });
 
-    new cdk.CfnOutput(this, "ProductServiceApiUrl", {
-      value: api.url ?? "Something went wrong with the API URL",
-      description: "The URL of the Product Service API",
-      exportName: "ProductServiceApiUrl",
-    });
-
     // /products
     const productsResource = api.root.addResource("products");
     productsResource.addMethod(

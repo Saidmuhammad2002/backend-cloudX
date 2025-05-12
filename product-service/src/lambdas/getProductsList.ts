@@ -46,7 +46,7 @@ export const handler: Handler = async (event) => {
         });
       }
 
-      return buildResponse(200, { products });
+      return buildResponse(200, products);
     }
 
     return buildResponse(404, { message: "No products found" });

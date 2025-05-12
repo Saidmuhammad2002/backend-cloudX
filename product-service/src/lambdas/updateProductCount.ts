@@ -23,7 +23,10 @@ export const handler: Handler = async (event) => {
   const command = new UpdateItemCommand({
     TableName: stockTable,
     Key: { product_id: { S: productId } },
-    UpdateExpression: "SET count = :count, updatedAt = :updatedAt",
+    UpdateExpression: "SET #count = :count, updated_at = :updated_at",
+    ExpressionAttributeNames: {
+      "#count": "count",
+    },
     ExpressionAttributeValues: {
       ":count": { N: count.toString() },
       ":updated_at": { N: Date.now().toString() },

@@ -32,7 +32,7 @@ export const handler: Handler = async (event) => {
       TableName: productTable,
       Key: { id: { S: productId } },
       UpdateExpression:
-        "SET title = :title, description = :desc, price = :price, updated_at = :updatedAt",
+        "SET title = :title, description = :desc, price = :price, updated_at = :updated_at",
       ExpressionAttributeValues: {
         ":title": { S: title },
         ":desc": { S: description },
@@ -48,7 +48,10 @@ export const handler: Handler = async (event) => {
     const updateStockCommand = new UpdateItemCommand({
       TableName: stockTable,
       Key: { product_id: { S: productId } },
-      UpdateExpression: "SET count = :count",
+      UpdateExpression: "SET #count = :count",
+      ExpressionAttributeNames: {
+        "#count": "count",
+      },
       ExpressionAttributeValues: {
         ":count": { N: count.toString() },
       },

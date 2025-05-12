@@ -153,7 +153,13 @@ export class ProductServiceStack extends cdk.Stack {
       description: "Product Service API",
     });
 
-    const productsResource = api.root.addResource("products");
+    const productsResource = api.root.addResource("products", {
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+      },
+    });
+
     productsResource.addMethod(
       "GET",
       new apigateway.LambdaIntegration(getProductsListLambda)
@@ -163,7 +169,13 @@ export class ProductServiceStack extends cdk.Stack {
       new apigateway.LambdaIntegration(createProductLambda)
     );
 
-    const productByIdResource = productsResource.addResource("{productId}");
+    const productByIdResource = productsResource.addResource("{productId}", {
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+      },
+    });
+
     productByIdResource.addMethod(
       "GET",
       new apigateway.LambdaIntegration(getProductByIdLambda)
@@ -177,7 +189,13 @@ export class ProductServiceStack extends cdk.Stack {
       new apigateway.LambdaIntegration(deleteProductLambda)
     );
 
-    const productByIdStockResource = productByIdResource.addResource("stock");
+    const productByIdStockResource = productByIdResource.addResource("stock", {
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+      },
+    });
+
     productByIdStockResource.addMethod(
       "PUT",
       new apigateway.LambdaIntegration(updateProductCountLambda)

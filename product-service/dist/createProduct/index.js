@@ -11199,7 +11199,7 @@ var require_dist_cjs32 = __commonJS({
     });
     module2.exports = __toCommonJS2(src_exports);
     var import_protocol_http11 = require_dist_cjs3();
-    var import_uuid = (init_esm_node(), __toCommonJS(esm_node_exports));
+    var import_uuid2 = (init_esm_node(), __toCommonJS(esm_node_exports));
     var import_util_retry3 = require_dist_cjs31();
     var getDefaultRetryQuota = /* @__PURE__ */ __name((initialRetryTokens, options) => {
       const MAX_CAPACITY = initialRetryTokens;
@@ -11274,7 +11274,7 @@ var require_dist_cjs32 = __commonJS({
         const maxAttempts = await this.getMaxAttempts();
         const { request } = args;
         if (import_protocol_http11.HttpRequest.isInstance(request)) {
-          request.headers[import_util_retry3.INVOCATION_ID_HEADER] = (0, import_uuid.v4)();
+          request.headers[import_util_retry3.INVOCATION_ID_HEADER] = (0, import_uuid2.v4)();
         }
         while (true) {
           try {
@@ -11435,7 +11435,7 @@ var require_dist_cjs32 = __commonJS({
         const { request } = args;
         const isRequest = import_protocol_http11.HttpRequest.isInstance(request);
         if (isRequest) {
-          request.headers[import_util_retry3.INVOCATION_ID_HEADER] = (0, import_uuid.v4)();
+          request.headers[import_util_retry3.INVOCATION_ID_HEADER] = (0, import_uuid2.v4)();
         }
         while (true) {
           try {
@@ -14268,7 +14268,7 @@ var require_dist_cjs42 = __commonJS({
     var import_util_buffer_from = require_dist_cjs11();
     var import_util_utf83 = require_dist_cjs12();
     var import_buffer = require("buffer");
-    var import_crypto9 = require("crypto");
+    var import_crypto11 = require("crypto");
     var Hash3 = class {
       static {
         __name(this, "Hash");
@@ -14285,7 +14285,7 @@ var require_dist_cjs42 = __commonJS({
         return Promise.resolve(this.hash.digest());
       }
       reset() {
-        this.hash = this.secret ? (0, import_crypto9.createHmac)(this.algorithmIdentifier, castSourceData(this.secret)) : (0, import_crypto9.createHash)(this.algorithmIdentifier);
+        this.hash = this.secret ? (0, import_crypto11.createHmac)(this.algorithmIdentifier, castSourceData(this.secret)) : (0, import_crypto11.createHash)(this.algorithmIdentifier);
       }
     };
     function castSourceData(toCast, encoding) {
@@ -19004,7 +19004,7 @@ var require_dist_cjs54 = __commonJS({
       ExportTableToPointInTimeCommand: () => ExportTableToPointInTimeCommand,
       ExportType: () => ExportType,
       ExportViewType: () => ExportViewType,
-      GetItemCommand: () => GetItemCommand2,
+      GetItemCommand: () => GetItemCommand,
       GetResourcePolicyCommand: () => GetResourcePolicyCommand,
       GlobalTableAlreadyExistsException: () => GlobalTableAlreadyExistsException,
       GlobalTableNotFoundException: () => GlobalTableNotFoundException,
@@ -19058,7 +19058,7 @@ var require_dist_cjs54 = __commonJS({
       SSEStatus: () => SSEStatus,
       SSEType: () => SSEType,
       ScalarAttributeType: () => ScalarAttributeType,
-      ScanCommand: () => ScanCommand2,
+      ScanCommand: () => ScanCommand,
       Select: () => Select,
       StreamViewType: () => StreamViewType,
       TableAlreadyExistsException: () => TableAlreadyExistsException,
@@ -19069,7 +19069,7 @@ var require_dist_cjs54 = __commonJS({
       TagResourceCommand: () => TagResourceCommand,
       TimeToLiveStatus: () => TimeToLiveStatus,
       TransactGetItemsCommand: () => TransactGetItemsCommand,
-      TransactWriteItemsCommand: () => TransactWriteItemsCommand,
+      TransactWriteItemsCommand: () => TransactWriteItemsCommand2,
       TransactionCanceledException: () => TransactionCanceledException,
       TransactionConflictException: () => TransactionConflictException,
       TransactionInProgressException: () => TransactionInProgressException,
@@ -19126,7 +19126,7 @@ var require_dist_cjs54 = __commonJS({
     };
     var import_core17 = (init_dist_es2(), __toCommonJS(dist_es_exports2));
     var import_protocol_http11 = require_dist_cjs3();
-    var import_uuid = (init_esm_node2(), __toCommonJS(esm_node_exports2));
+    var import_uuid2 = (init_esm_node2(), __toCommonJS(esm_node_exports2));
     var import_smithy_client25 = require_dist_cjs25();
     var DynamoDBServiceException = class _DynamoDBServiceException extends import_smithy_client25.ServiceException {
       static {
@@ -21683,7 +21683,7 @@ var require_dist_cjs54 = __commonJS({
     }, "se_ExecuteStatementInput");
     var se_ExecuteTransactionInput = /* @__PURE__ */ __name((input, context) => {
       return (0, import_smithy_client25.take)(input, {
-        ClientRequestToken: [true, (_2) => _2 ?? (0, import_uuid.v4)()],
+        ClientRequestToken: [true, (_2) => _2 ?? (0, import_uuid2.v4)()],
         ReturnConsumedCapacity: [],
         TransactStatements: /* @__PURE__ */ __name((_2) => se_ParameterizedStatements(_2, context), "TransactStatements")
       });
@@ -21707,7 +21707,7 @@ var require_dist_cjs54 = __commonJS({
     }, "se_ExpectedAttributeValue");
     var se_ExportTableToPointInTimeInput = /* @__PURE__ */ __name((input, context) => {
       return (0, import_smithy_client25.take)(input, {
-        ClientToken: [true, (_2) => _2 ?? (0, import_uuid.v4)()],
+        ClientToken: [true, (_2) => _2 ?? (0, import_uuid2.v4)()],
         ExportFormat: [],
         ExportTime: /* @__PURE__ */ __name((_2) => _2.getTime() / 1e3, "ExportTime"),
         ExportType: [],
@@ -21782,7 +21782,7 @@ var require_dist_cjs54 = __commonJS({
     }, "se_GlobalTableGlobalSecondaryIndexSettingsUpdateList");
     var se_ImportTableInput = /* @__PURE__ */ __name((input, context) => {
       return (0, import_smithy_client25.take)(input, {
-        ClientToken: [true, (_2) => _2 ?? (0, import_uuid.v4)()],
+        ClientToken: [true, (_2) => _2 ?? (0, import_uuid2.v4)()],
         InputCompressionType: [],
         InputFormat: [],
         InputFormatOptions: import_smithy_client25._json,
@@ -22050,7 +22050,7 @@ var require_dist_cjs54 = __commonJS({
     }, "se_TransactWriteItemList");
     var se_TransactWriteItemsInput = /* @__PURE__ */ __name((input, context) => {
       return (0, import_smithy_client25.take)(input, {
-        ClientRequestToken: [true, (_2) => _2 ?? (0, import_uuid.v4)()],
+        ClientRequestToken: [true, (_2) => _2 ?? (0, import_uuid2.v4)()],
         ReturnConsumedCapacity: [],
         ReturnItemCollectionMetrics: [],
         TransactItems: /* @__PURE__ */ __name((_2) => se_TransactWriteItemList(_2, context), "TransactItems")
@@ -23488,7 +23488,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "ExportTableToPointInTimeCommand");
       }
     };
-    var GetItemCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
+    var GetItemCommand = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArn: { type: "contextParams", name: "TableName" }
     }).m(function(Command, cs, config, o3) {
@@ -23677,7 +23677,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "RestoreTableToPointInTimeCommand");
       }
     };
-    var ScanCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
+    var ScanCommand = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArn: { type: "contextParams", name: "TableName" }
     }).m(function(Command, cs, config, o3) {
@@ -23719,7 +23719,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "TransactGetItemsCommand");
       }
     };
-    var TransactWriteItemsCommand = class extends import_smithy_client25.Command.classBuilder().ep({
+    var TransactWriteItemsCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArnList: {
         type: "operationContextParams",
@@ -23898,7 +23898,7 @@ var require_dist_cjs54 = __commonJS({
       ExecuteStatementCommand,
       ExecuteTransactionCommand,
       ExportTableToPointInTimeCommand,
-      GetItemCommand: GetItemCommand2,
+      GetItemCommand,
       GetResourcePolicyCommand,
       ImportTableCommand,
       ListBackupsCommand,
@@ -23913,10 +23913,10 @@ var require_dist_cjs54 = __commonJS({
       QueryCommand,
       RestoreTableFromBackupCommand,
       RestoreTableToPointInTimeCommand,
-      ScanCommand: ScanCommand2,
+      ScanCommand,
       TagResourceCommand,
       TransactGetItemsCommand,
-      TransactWriteItemsCommand,
+      TransactWriteItemsCommand: TransactWriteItemsCommand2,
       UntagResourceCommand,
       UpdateContinuousBackupsCommand,
       UpdateContributorInsightsCommand,
@@ -23945,7 +23945,7 @@ var require_dist_cjs54 = __commonJS({
     var import_core72 = (init_dist_es(), __toCommonJS(dist_es_exports));
     var paginateQuery = (0, import_core72.createPaginator)(DynamoDBClient2, QueryCommand, "ExclusiveStartKey", "LastEvaluatedKey", "Limit");
     var import_core82 = (init_dist_es(), __toCommonJS(dist_es_exports));
-    var paginateScan = (0, import_core82.createPaginator)(DynamoDBClient2, ScanCommand2, "ExclusiveStartKey", "LastEvaluatedKey", "Limit");
+    var paginateScan = (0, import_core82.createPaginator)(DynamoDBClient2, ScanCommand, "ExclusiveStartKey", "LastEvaluatedKey", "Limit");
     var import_util_waiter = require_dist_cjs53();
     var checkState = /* @__PURE__ */ __name(async (client, input) => {
       let reason;
@@ -24003,13 +24003,64 @@ var require_dist_cjs54 = __commonJS({
   }
 });
 
-// src/lambdas/getProductsList.ts
-var getProductsList_exports = {};
-__export(getProductsList_exports, {
+// src/lambdas/createProduct.ts
+var createProduct_exports = {};
+__export(createProduct_exports, {
   handler: () => handler
 });
-module.exports = __toCommonJS(getProductsList_exports);
+module.exports = __toCommonJS(createProduct_exports);
 var import_client_dynamodb = __toESM(require_dist_cjs54());
+
+// node_modules/uuid/dist/esm/stringify.js
+var byteToHex3 = [];
+for (let i3 = 0; i3 < 256; ++i3) {
+  byteToHex3.push((i3 + 256).toString(16).slice(1));
+}
+function unsafeStringify3(arr, offset = 0) {
+  return (byteToHex3[arr[offset + 0]] + byteToHex3[arr[offset + 1]] + byteToHex3[arr[offset + 2]] + byteToHex3[arr[offset + 3]] + "-" + byteToHex3[arr[offset + 4]] + byteToHex3[arr[offset + 5]] + "-" + byteToHex3[arr[offset + 6]] + byteToHex3[arr[offset + 7]] + "-" + byteToHex3[arr[offset + 8]] + byteToHex3[arr[offset + 9]] + "-" + byteToHex3[arr[offset + 10]] + byteToHex3[arr[offset + 11]] + byteToHex3[arr[offset + 12]] + byteToHex3[arr[offset + 13]] + byteToHex3[arr[offset + 14]] + byteToHex3[arr[offset + 15]]).toLowerCase();
+}
+
+// node_modules/uuid/dist/esm/rng.js
+var import_crypto9 = require("crypto");
+var rnds8Pool3 = new Uint8Array(256);
+var poolPtr3 = rnds8Pool3.length;
+function rng3() {
+  if (poolPtr3 > rnds8Pool3.length - 16) {
+    (0, import_crypto9.randomFillSync)(rnds8Pool3);
+    poolPtr3 = 0;
+  }
+  return rnds8Pool3.slice(poolPtr3, poolPtr3 += 16);
+}
+
+// node_modules/uuid/dist/esm/native.js
+var import_crypto10 = require("crypto");
+var native_default3 = { randomUUID: import_crypto10.randomUUID };
+
+// node_modules/uuid/dist/esm/v4.js
+function v43(options, buf, offset) {
+  if (native_default3.randomUUID && !buf && !options) {
+    return native_default3.randomUUID();
+  }
+  options = options || {};
+  const rnds = options.random ?? options.rng?.() ?? rng3();
+  if (rnds.length < 16) {
+    throw new Error("Random bytes length must be >= 16");
+  }
+  rnds[6] = rnds[6] & 15 | 64;
+  rnds[8] = rnds[8] & 63 | 128;
+  if (buf) {
+    offset = offset || 0;
+    if (offset < 0 || offset + 16 > buf.length) {
+      throw new RangeError(`UUID byte range ${offset}:${offset + 15} is out of buffer bounds`);
+    }
+    for (let i3 = 0; i3 < 16; ++i3) {
+      buf[offset + i3] = rnds[i3];
+    }
+    return buf;
+  }
+  return unsafeStringify3(rnds);
+}
+var v4_default3 = v43;
 
 // src/utils/responseBuillder.ts
 var defaultHeaders = {
@@ -24025,43 +24076,47 @@ var buildResponse = (statusCode, body, customHeaders = {}) => {
   };
 };
 
-// src/lambdas/getProductsList.ts
+// src/lambdas/createProduct.ts
 var dynamoDB = new import_client_dynamodb.DynamoDBClient({ region: process.env.AWS_REGION });
 var productTable = process.env.PRODUCTS_TABLE;
 var stockTable = process.env.STOCK_TABLE;
 var handler = async (event) => {
   try {
-    const command = new import_client_dynamodb.ScanCommand({
-      TableName: productTable
-    });
-    const result = await dynamoDB.send(command);
-    if (result.Items) {
-      const products = [];
-      for (const item of result.Items) {
-        const productId = item.id.S;
-        if (!productId) continue;
-        const stockCommand = new import_client_dynamodb.GetItemCommand({
-          TableName: stockTable,
-          Key: {
-            product_id: { S: productId }
-          }
-        });
-        const stockResult = await dynamoDB.send(stockCommand);
-        const stockCount = stockResult.Item?.count?.N || "0";
-        products.push({
-          id: item.id.S,
-          title: item.title.S,
-          description: item.description.S,
-          price: item.price.N,
-          count: stockCount
-        });
-      }
-      return buildResponse(200, { products });
+    const { title, description, price, count } = JSON.parse(event.body);
+    if (!title || !price || count == null) {
+      return buildResponse(400, { message: "Missing required fields." });
     }
-    return buildResponse(404, { message: "No products found" });
+    const id = v4_default3();
+    const command = new import_client_dynamodb.TransactWriteItemsCommand({
+      TransactItems: [
+        {
+          Put: {
+            TableName: productTable,
+            Item: {
+              id: { S: id },
+              title: { S: title },
+              description: { S: description || "" },
+              price: { N: price.toString() },
+              created_at: { N: Date.now().toString() }
+            }
+          }
+        },
+        {
+          Put: {
+            TableName: stockTable,
+            Item: {
+              product_id: { S: id },
+              count: { N: count.toString() },
+              created_at: { N: Date.now().toString() }
+            }
+          }
+        }
+      ]
+    });
+    await dynamoDB.send(command);
+    return buildResponse(201, { message: "Product created", id });
   } catch (error) {
-    console.error("Error fetching products:", error);
-    return buildResponse(500, { message: "Internal server error" });
+    return buildResponse(500, { message: "Internal Server Error" });
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

@@ -19004,7 +19004,7 @@ var require_dist_cjs54 = __commonJS({
       ExportTableToPointInTimeCommand: () => ExportTableToPointInTimeCommand,
       ExportType: () => ExportType,
       ExportViewType: () => ExportViewType,
-      GetItemCommand: () => GetItemCommand2,
+      GetItemCommand: () => GetItemCommand,
       GetResourcePolicyCommand: () => GetResourcePolicyCommand,
       GlobalTableAlreadyExistsException: () => GlobalTableAlreadyExistsException,
       GlobalTableNotFoundException: () => GlobalTableNotFoundException,
@@ -19069,7 +19069,7 @@ var require_dist_cjs54 = __commonJS({
       TagResourceCommand: () => TagResourceCommand,
       TimeToLiveStatus: () => TimeToLiveStatus,
       TransactGetItemsCommand: () => TransactGetItemsCommand,
-      TransactWriteItemsCommand: () => TransactWriteItemsCommand,
+      TransactWriteItemsCommand: () => TransactWriteItemsCommand2,
       TransactionCanceledException: () => TransactionCanceledException,
       TransactionConflictException: () => TransactionConflictException,
       TransactionInProgressException: () => TransactionInProgressException,
@@ -23488,7 +23488,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "ExportTableToPointInTimeCommand");
       }
     };
-    var GetItemCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
+    var GetItemCommand = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArn: { type: "contextParams", name: "TableName" }
     }).m(function(Command, cs, config, o3) {
@@ -23719,7 +23719,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "TransactGetItemsCommand");
       }
     };
-    var TransactWriteItemsCommand = class extends import_smithy_client25.Command.classBuilder().ep({
+    var TransactWriteItemsCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArnList: {
         type: "operationContextParams",
@@ -23898,7 +23898,7 @@ var require_dist_cjs54 = __commonJS({
       ExecuteStatementCommand,
       ExecuteTransactionCommand,
       ExportTableToPointInTimeCommand,
-      GetItemCommand: GetItemCommand2,
+      GetItemCommand,
       GetResourcePolicyCommand,
       ImportTableCommand,
       ListBackupsCommand,
@@ -23916,7 +23916,7 @@ var require_dist_cjs54 = __commonJS({
       ScanCommand,
       TagResourceCommand,
       TransactGetItemsCommand,
-      TransactWriteItemsCommand,
+      TransactWriteItemsCommand: TransactWriteItemsCommand2,
       UntagResourceCommand,
       UpdateContinuousBackupsCommand,
       UpdateContributorInsightsCommand,
@@ -24003,12 +24003,12 @@ var require_dist_cjs54 = __commonJS({
   }
 });
 
-// src/lambdas/getProductsById.ts
-var getProductsById_exports = {};
-__export(getProductsById_exports, {
+// src/lambdas/deleteProduct.ts
+var deleteProduct_exports = {};
+__export(deleteProduct_exports, {
   handler: () => handler
 });
-module.exports = __toCommonJS(getProductsById_exports);
+module.exports = __toCommonJS(deleteProduct_exports);
 var import_client_dynamodb = __toESM(require_dist_cjs54());
 
 // src/utils/responseBuillder.ts
@@ -24026,7 +24026,7 @@ var buildResponse = (statusCode, body, customHeaders = {}) => {
   };
 };
 
-// src/lambdas/getProductsById.ts
+// src/lambdas/deleteProduct.ts
 var dynamoDB = new import_client_dynamodb.DynamoDBClient({ region: process.env.AWS_REGION });
 var productTable = process.env.PRODUCTS_TABLE;
 var stockTable = process.env.STOCK_TABLE;
@@ -24036,33 +24036,30 @@ var handler = async (event) => {
     if (!productId) {
       return buildResponse(400, { message: "Missing productId in path" });
     }
-    const productCommand = new import_client_dynamodb.GetItemCommand({
-      TableName: productTable,
-      Key: {
-        id: { S: productId }
-      }
+    const command = new import_client_dynamodb.TransactWriteItemsCommand({
+      TransactItems: [
+        {
+          Delete: {
+            TableName: productTable,
+            Key: {
+              id: { S: productId }
+            }
+          }
+        },
+        {
+          Delete: {
+            TableName: stockTable,
+            Key: {
+              product_id: { S: productId }
+            }
+          }
+        }
+      ]
     });
-    const productResult = await dynamoDB.send(productCommand);
-    if (!productResult.Item) {
-      return buildResponse(404, { message: "Product not found" });
-    }
-    const stockCommand = new import_client_dynamodb.GetItemCommand({
-      TableName: stockTable,
-      Key: {
-        product_id: { S: productId }
-      }
-    });
-    const stockResult = await dynamoDB.send(stockCommand);
-    const stockCount = stockResult.Item?.count?.N || "0";
-    return buildResponse(200, {
-      id: productResult.Item.id.S,
-      title: productResult.Item.title.S,
-      description: productResult.Item.description.S,
-      price: productResult.Item.price.N,
-      count: stockCount
-    });
+    await dynamoDB.send(command);
+    return buildResponse(200, { message: "Product and stock deleted" });
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error deleting product:", error);
     return buildResponse(500, { message: "Internal server error" });
   }
 };

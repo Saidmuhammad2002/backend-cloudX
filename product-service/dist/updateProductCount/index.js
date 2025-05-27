@@ -19004,7 +19004,7 @@ var require_dist_cjs54 = __commonJS({
       ExportTableToPointInTimeCommand: () => ExportTableToPointInTimeCommand,
       ExportType: () => ExportType,
       ExportViewType: () => ExportViewType,
-      GetItemCommand: () => GetItemCommand2,
+      GetItemCommand: () => GetItemCommand,
       GetResourcePolicyCommand: () => GetResourcePolicyCommand,
       GlobalTableAlreadyExistsException: () => GlobalTableAlreadyExistsException,
       GlobalTableNotFoundException: () => GlobalTableNotFoundException,
@@ -19078,7 +19078,7 @@ var require_dist_cjs54 = __commonJS({
       UpdateContributorInsightsCommand: () => UpdateContributorInsightsCommand,
       UpdateGlobalTableCommand: () => UpdateGlobalTableCommand,
       UpdateGlobalTableSettingsCommand: () => UpdateGlobalTableSettingsCommand,
-      UpdateItemCommand: () => UpdateItemCommand,
+      UpdateItemCommand: () => UpdateItemCommand2,
       UpdateKinesisStreamingDestinationCommand: () => UpdateKinesisStreamingDestinationCommand,
       UpdateTableCommand: () => UpdateTableCommand,
       UpdateTableReplicaAutoScalingCommand: () => UpdateTableReplicaAutoScalingCommand,
@@ -23488,7 +23488,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "ExportTableToPointInTimeCommand");
       }
     };
-    var GetItemCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
+    var GetItemCommand = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArn: { type: "contextParams", name: "TableName" }
     }).m(function(Command, cs, config, o3) {
@@ -23804,7 +23804,7 @@ var require_dist_cjs54 = __commonJS({
         __name(this, "UpdateGlobalTableSettingsCommand");
       }
     };
-    var UpdateItemCommand = class extends import_smithy_client25.Command.classBuilder().ep({
+    var UpdateItemCommand2 = class extends import_smithy_client25.Command.classBuilder().ep({
       ...commonParams3,
       ResourceArn: { type: "contextParams", name: "TableName" }
     }).m(function(Command, cs, config, o3) {
@@ -23898,7 +23898,7 @@ var require_dist_cjs54 = __commonJS({
       ExecuteStatementCommand,
       ExecuteTransactionCommand,
       ExportTableToPointInTimeCommand,
-      GetItemCommand: GetItemCommand2,
+      GetItemCommand,
       GetResourcePolicyCommand,
       ImportTableCommand,
       ListBackupsCommand,
@@ -23922,7 +23922,7 @@ var require_dist_cjs54 = __commonJS({
       UpdateContributorInsightsCommand,
       UpdateGlobalTableCommand,
       UpdateGlobalTableSettingsCommand,
-      UpdateItemCommand,
+      UpdateItemCommand: UpdateItemCommand2,
       UpdateKinesisStreamingDestinationCommand,
       UpdateTableCommand,
       UpdateTableReplicaAutoScalingCommand,
@@ -24003,12 +24003,12 @@ var require_dist_cjs54 = __commonJS({
   }
 });
 
-// src/lambdas/getProductsById.ts
-var getProductsById_exports = {};
-__export(getProductsById_exports, {
+// src/lambdas/updateProductCount.ts
+var updateProductCount_exports = {};
+__export(updateProductCount_exports, {
   handler: () => handler
 });
-module.exports = __toCommonJS(getProductsById_exports);
+module.exports = __toCommonJS(updateProductCount_exports);
 var import_client_dynamodb = __toESM(require_dist_cjs54());
 
 // src/utils/responseBuillder.ts
@@ -24026,43 +24026,37 @@ var buildResponse = (statusCode, body, customHeaders = {}) => {
   };
 };
 
-// src/lambdas/getProductsById.ts
-var dynamoDB = new import_client_dynamodb.DynamoDBClient({ region: process.env.AWS_REGION });
-var productTable = process.env.PRODUCTS_TABLE;
+// src/lambdas/updateProductCount.ts
 var stockTable = process.env.STOCK_TABLE;
+var dynamoDB = new import_client_dynamodb.DynamoDBClient({ region: process.env.AWS_REGION });
 var handler = async (event) => {
+  const productId = event.pathParameters?.productId;
+  const requestBody = JSON.parse(event.body || "{}");
+  if (!productId) {
+    return buildResponse(400, { message: "Missing productId in path" });
+  }
+  const { count } = requestBody;
+  if (typeof count !== "number") {
+    return buildResponse(400, { message: "Invalid stock count" });
+  }
+  const command = new import_client_dynamodb.UpdateItemCommand({
+    TableName: stockTable,
+    Key: { product_id: { S: productId } },
+    UpdateExpression: "SET #count = :count, updated_at = :updated_at",
+    ExpressionAttributeNames: {
+      "#count": "count"
+    },
+    ExpressionAttributeValues: {
+      ":count": { N: count.toString() },
+      ":updated_at": { N: Date.now().toString() }
+    },
+    ReturnValues: "ALL_NEW"
+  });
   try {
-    const productId = event.pathParameters?.productId;
-    if (!productId) {
-      return buildResponse(400, { message: "Missing productId in path" });
-    }
-    const productCommand = new import_client_dynamodb.GetItemCommand({
-      TableName: productTable,
-      Key: {
-        id: { S: productId }
-      }
-    });
-    const productResult = await dynamoDB.send(productCommand);
-    if (!productResult.Item) {
-      return buildResponse(404, { message: "Product not found" });
-    }
-    const stockCommand = new import_client_dynamodb.GetItemCommand({
-      TableName: stockTable,
-      Key: {
-        product_id: { S: productId }
-      }
-    });
-    const stockResult = await dynamoDB.send(stockCommand);
-    const stockCount = stockResult.Item?.count?.N || "0";
-    return buildResponse(200, {
-      id: productResult.Item.id.S,
-      title: productResult.Item.title.S,
-      description: productResult.Item.description.S,
-      price: productResult.Item.price.N,
-      count: stockCount
-    });
+    const result = await dynamoDB.send(command);
+    return buildResponse(200, { message: "Stock updated", data: result });
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error updating stock:", error);
     return buildResponse(500, { message: "Internal server error" });
   }
 };
